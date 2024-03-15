@@ -1,0 +1,143 @@
+module router_choice {
+    namespace "http://www.devnet.com/router" ;
+    prefix "router";
+
+    typedef description_type {
+        type string {
+            length "4..20";
+        }
+    } 
+    typedef speed_type {
+        type enumeration {
+            enum "100Mbps";
+            enum "1Gbps";
+            enum "10Gbps";
+        }
+    }
+    typedef interface_type {
+        type string {
+            length "4..11";
+            pattern ".*Ethernet.*";
+        }
+    }
+    grouping router_process {
+        list router_type {
+            key router;
+            leaf router {
+                description "Un protocolo";
+                type enumeration{
+                    enum "rip";
+                    enum "ospf";
+                }
+            }
+            leaf process_id {
+                type uint8 {
+                    range "1..10|100..199";
+                } 
+            }
+            leaf-list interfaces {
+                type leafref {
+                    path "../../../interface/name";
+                }
+            }
+        }
+    }
+    list interface {
+        key name;
+        unique "ip_address netmask";
+        leaf name {
+            type interface_type;
+        }
+        leaf description {
+            type description_type;
+        }
+        leaf ip_address {
+            type string;
+        }
+        leaf netmask {
+            type string;
+        }
+        leaf speed{
+            type speed_type;
+        }
+    }
+    list acl {
+        key acl_number;
+        leaf acl_number {
+            type union {
+                type uint8 {
+                    range "1..199";
+                }
+            }
+        }
+        choice standard-or-extended {
+            case standard-acl {
+                when "acl_number>=1 and acl_number<=99";
+                list std_type {
+                    key index;
+                    unique "address wildcard";
+                    leaf index {
+                        type uint16;
+                    }
+                    leaf permit_deny{
+                        type enumeration {
+                            enum "permit";
+                            enum "deny";
+                        }
+                    }
+                    leaf address {
+                        type string;
+                    }
+                    leaf wildcard {
+                        type string;
+                    }
+                }
+            }
+            case extended-acl {
+                when "acl_number>=100 and acl_number<=199";
+                list ext_type {
+                    key index;
+                    unique "src_address src_wildcard dst_address dst_wildcard port";
+                    leaf index {
+                        type uint16;
+                    }
+                    leaf permit_deny{
+                        type enumeration {
+                            enum "permit";
+                            enum "deny";
+                        }
+                    }
+                    leaf protocol {
+                        type enumeration {
+                            enum "ip";
+                            enum "tcp";
+                            enum "udp";
+                        }
+                    }
+                    leaf src_address {
+                        type string;
+                    }
+                    leaf src_wildcard {
+                        type string;
+                    }
+                    leaf dst_address {
+                        type string;
+                    }
+                    leaf dst_wildcard {
+                        type string;
+                    }
+                    leaf port {
+                        type uint16;
+                    }
+                }
+            }
+        }
+    }
+    container router {
+        uses router_process {
+            refine router_type/router {
+                description "OSPF y RIP";
+            }
+        }
+    }
+}

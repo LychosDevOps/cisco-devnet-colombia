@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<data xmlns="urn:ietf:params:xml:ns:netconf:base:1.0">
+    <interface xmlns="http://www.devnet.com/router">
+        <name>Ethernet1/0</name>
+        <description>Interfaz WAN</description>
+        <ip_address>192.168.0.1</ip_address>
+        <netmask>255.255.255.0</netmask>
+        <speed>1Gbps</speed>
+    </interface>
+    <interface xmlns="http://www.devnet.com/router">
+        <name>Ethernet1/1</name>
+        <description>Interfaz LAN</description>
+        <ip_address>192.168.1.1</ip_address>
+        <netmask>255.255.255.0</netmask>
+        <speed>10Gbps</speed>
+    </interface>
+    <router xmlns="http://www.devnet.com/router">
+        <router_type>
+            <router>ospf</router>
+            <process_id>110</process_id>
+            <interfaces>Ethernet1/0</interfaces>
+            <interfaces>Ethernet1/1</interfaces>
+        </router_type>
+        <router_type>
+            <router>rip</router>
+            <process_id>10</process_id>
+            <interfaces>Ethernet1/0</interfaces>
+            <interfaces>Ethernet1/1</interfaces>
+        </router_type>
+    </router>
+    <acl xmlns="http://www.devnet.com/router">
+        <acl_number>299</acl_number>
+        <test>prueba</test>
+    </acl>
+</data>
