@@ -1,0 +1,20 @@
+{% for interface in interfaces -%}
+interface {{ interface['name'] }}
+ ip address {{ interface.ip }} {{ interface['netmask'] }}
+{%- if "Ethernet" in interface['name'] %}
+ ip ospf network point-to-point
+ no shutdown
+{%- endif %}
+!
+{% endfor -%}
+{% if 'ospf' == router.protocol -%}
+router ospf {{ router.id }}
+ router-id {{ router.routerid }}
+{%- for interface in interfaces -%}
+{%+ if 'Loopback' in interface.name %}
+ passive-interface {{ interface.name }}
+{%- endif %}
+ network {{ interface.ip }} 0.0.0.0 area {{ router.area }}
+{%- endfor %}
+ !
+!{% endif -%}
