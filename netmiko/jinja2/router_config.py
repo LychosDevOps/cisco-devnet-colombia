@@ -49,8 +49,6 @@ devices_data = {
                 'area': '0' 
             }
         }
-
-
 }
 config_device = {}
 for device in devices_data.keys():
@@ -76,8 +74,8 @@ for device,configuration in config_device.items():
         print()
         if device == 'C8K2':
             while True:
-                time.sleep(1)
                 ospf_nei = connection.send_command('show ip ospf nei')
+                time.sleep(1)
                 if len(ospf_nei) > 0:
                     break
             print('Confirmación de vecindad OSPF:')

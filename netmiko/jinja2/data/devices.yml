@@ -1,0 +1,27 @@
+---
+C8K1: 
+  interfaces:
+    - name: "Loopback1"
+      ip: "192.168.0.100"
+      netmask: "255.255.255.255"
+    - name: "GigabitEthernet2"
+      ip: "172.16.0.1"
+      netmask: "255.255.255.252"
+  router:
+    protocol: "ospf"
+    id: "1"
+    routerid: "1.1.1.1"
+    area: "0"
+C8K2: 
+  interfaces:
+    - name: "Loopback1"
+      ip: "192.168.0.101"
+      netmask: "255.255.255.255"
+    - name: "GigabitEthernet2"
+      ip: "172.16.0.2"
+      netmask: "255.255.255.252"
+  router:
+    protocol: "ospf"
+    id: "1"
+    routerid: "1.1.1.2"
+    area: "0"
