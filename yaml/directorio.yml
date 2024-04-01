@@ -1,0 +1,6 @@
+---
+usuario:
+  - nombre: "Juan"
+    edad: 22
+  - nombre: "Pedro"
+    edad: 25
