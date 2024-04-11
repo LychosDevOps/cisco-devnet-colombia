@@ -1,0 +1,9 @@
+{%+ for interface in interfaces %}
+interface {{ interface.name }}
+ ip address {{ interface.ip_address }} {{ interface.netmask }}
+{%- if interface.enable == true %}
+ no shutdown
+{%- else %}
+ shutdown
+{%- endif %}
+!{% endfor %}
